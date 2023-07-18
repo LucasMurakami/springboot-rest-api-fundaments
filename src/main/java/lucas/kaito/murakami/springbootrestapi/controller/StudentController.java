@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/students")
 public class StudentController {
 
     // http://localhost:8080/student
@@ -21,7 +22,7 @@ public class StudentController {
     }
 
     // http://localhost:8080/students
-    @GetMapping("/students")
+    @GetMapping
     public ResponseEntity<List<Student>> getStudents() {
         List<Student> students = new ArrayList<>();
         students.add(new Student(1, "Test1", "Example1"));
@@ -35,7 +36,7 @@ public class StudentController {
     // {id} - URI template variable
     // http://localhost:8080/students/1
 
-    @GetMapping("/students/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Student> studentPathVariable(@PathVariable("id") Integer studentId) {
         Student student = new Student(studentId, "Test", "Example");
         return ResponseEntity.ok(student);
@@ -45,7 +46,7 @@ public class StudentController {
     // {id} - URI template variable
     // http://localhost:8080/students/1/test/example
 
-    @GetMapping("/students/{id}/{first-name}/{last-name}")
+    @GetMapping("/{id}/{first-name}/{last-name}")
     public ResponseEntity<Student> studentPathVariable2(@PathVariable Integer id,
                                        @PathVariable("first-name") String firstName,
                                        @PathVariable("last-name") String lastName) {
@@ -57,7 +58,7 @@ public class StudentController {
     // http://localhost:8080/students/query?id=1
     // ? = Query param
 
-    @GetMapping("/students/query")
+    @GetMapping("/query")
     public ResponseEntity<Student> studentRequestVariable(@RequestParam Integer id) {
         Student student = new Student(id, "Rest", "Example");
         return ResponseEntity.ok(student);
@@ -67,7 +68,7 @@ public class StudentController {
     // ? = Query param
     // & = And, multiple Query param
 
-    @GetMapping("/students/query2")
+    @GetMapping("/query2")
     public ResponseEntity<Student> studentRequestVariable2(@RequestParam Integer id, @RequestParam String firstName, @RequestParam String lastName) {
         Student student = new Student(id, firstName, lastName);
         return ResponseEntity.ok(student);
@@ -76,7 +77,7 @@ public class StudentController {
     // Spring BOOT REST API that handles HTTP POST Request - creating new resource
     // @PostMapping and @RequestBody
 
-    @PostMapping("/students/create")
+    @PostMapping("/create")
     //@ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         System.out.println(student.getId());
@@ -87,7 +88,7 @@ public class StudentController {
 
     // Spring BOOT REST API that handles HTTP PUT Request - updating existing resource
 
-    @PutMapping("students/{id}/update")
+    @PutMapping("/{id}/update")
     public ResponseEntity<Student> updateStudent(@RequestBody Student student, @PathVariable("id") int studentId) {
         System.out.println(student.getFirstName());
         System.out.println(student.getLastName());
@@ -96,7 +97,7 @@ public class StudentController {
 
     // Spring BOOT REST API that handles HTTP DELETE Request - deleting the existing resource
 
-    @DeleteMapping("students/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<String> deleteStudent(@PathVariable("id") int studentId) {
         return ResponseEntity.ok("Student deleted successfully!");
     }
